@@ -2,6 +2,7 @@ services:
   - type: web
     name: stock-analyzer-bot
     env: docker
+    rootDir: stock-analyzer-main
     envVars:
       - key: TELEGRAM_BOT_TOKEN
         sync: false
