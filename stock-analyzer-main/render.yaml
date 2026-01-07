@@ -1,9 +1,13 @@
 services:
   - type: web
-    name: stock-analyzer
+    name: stock-analyzer-bot
     env: python
     buildCommand: pip install -r requirements.txt
-    startCommand: ./start.sh
+    startCommand: chmod +x start.sh && ./start.sh
     envVars:
+      - key: TELEGRAM_BOT_TOKEN
+        sync: false
+      - key: TELEGRAM_CHANNEL_ID
+        sync: false
       - key: PYTHON_VERSION
         value: 3.10.0
