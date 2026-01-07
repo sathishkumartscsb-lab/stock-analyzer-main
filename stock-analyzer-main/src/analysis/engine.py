@@ -83,6 +83,7 @@ class AnalysisEngine:
         # Total
         score_report['total_score'] = float(f_score + t_score + n_score)
         
+<<<<<<< HEAD
         # Verdicts (pass component scores so we can explain reasons clearly)
         verdicts = self._generate_verdicts(
             score_report['total_score'],
@@ -92,6 +93,10 @@ class AnalysisEngine:
             f_score,
             t_score
         )
+=======
+        # Verdicts
+        verdicts = self._generate_verdicts(score_report['total_score'], fundamentals, technicals, news, f_score, t_score)
+>>>>>>> 08039216fd24499b44bfde1cde2b33d229cb0297
         score_report.update(verdicts)
         
         return score_report
