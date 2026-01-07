@@ -73,8 +73,17 @@ async def analyze_stock(update: Update, context: ContextTypes.DEFAULT_TYPE, symb
         logging.info(f"[{symbol}] Finished analysis successfully.")
         
     except Exception as e:
-        logging.error(f"Error analyzing {symbol}: {str(e)}", exc_info=True)
-        await context.bot.send_message(chat_id=cid, text=f"❌ Error analyzing {symbol}: {str(e)}")
+        error_msg = str(e)
+        logging.error(f"Error analyzing {symbol}: {error_msg}", exc_info=True)
+        # Send detailed error to user
+        import traceback
+        error_details = traceback.format_exc()
+        logging.error(f"Full traceback:\n{error_details}")
+        
+        # Truncate error if too long
+        if len(error_msg) > 200:
+            error_msg = error_msg[:200] + "..."
+        await context.bot.send_message(chat_id=cid, text=f"❌ Error analyzing {symbol}:\n{error_msg}\n\nPlease check logs for details.")
     finally:
         # Cleanup
         if 'output_path' in locals() and os.path.exists(output_path):
