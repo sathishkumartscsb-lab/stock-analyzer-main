@@ -1,9 +1,7 @@
 services:
   - type: web
     name: stock-analyzer-bot
-    env: python
-    buildCommand: pip install -r requirements.txt
-    startCommand: chmod +x start.sh && ./start.sh
+    env: docker
     envVars:
       - key: TELEGRAM_BOT_TOKEN
         sync: false
