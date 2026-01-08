@@ -6,6 +6,6 @@ yfinance
 Pillow
 matplotlib
 python-telegram-bot
-TA-Lib
 sqlalchemy
 flask
+gunicorn

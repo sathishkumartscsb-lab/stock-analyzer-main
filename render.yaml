@@ -1,5 +1,6 @@
 services:
   - type: web
+<<<<<<< HEAD
     name: stock-analyzer
     env: docker
     rootDir: stock-analyzer-main
@@ -7,3 +8,15 @@ services:
     envVars:
       - key: PORT
         value: 5000
+=======
+    name: stock-analyzer-bot
+    env: docker
+    rootDir: stock-analyzer-main
+    envVars:
+      - key: TELEGRAM_BOT_TOKEN
+        sync: false
+      - key: TELEGRAM_CHANNEL_ID
+        sync: false
+      - key: PYTHON_VERSION
+        value: 3.10.0
+>>>>>>> 9a0bf14adbdadd1661d6b00f9e0f57f6ecc5581c

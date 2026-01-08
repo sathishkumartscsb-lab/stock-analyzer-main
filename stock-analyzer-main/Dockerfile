@@ -1,58 +1,31 @@
-# Use an official Python runtime as a parent image
 FROM python:3.10-slim
 
-# Set environment variables
-ENV PYTHONDONTWRITEBYTECODE=1 \
-    PYTHONUNBUFFERED=1
-
-# Install system dependencies (TA-Lib C library requires build tools)
+# Install system dependencies (needed for Pillow/Matplotlib)
 RUN apt-get update && apt-get install -y \
-    gcc \
     build-essential \
-    wget \
-    tar \
+    libjpeg-dev \
+    zlib1g-dev \
+    libpng-dev \
+    libfreetype6-dev \
     && rm -rf /var/lib/apt/lists/*
 
-# Install TA-Lib C library
-WORKDIR /tmp
-RUN wget http://prdownloads.sourceforge.net/ta-lib/ta-lib-0.4.0-src.tar.gz && \
-    tar -xvzf ta-lib-0.4.0-src.tar.gz && \
-    cd ta-lib && \
-    ./configure --prefix=/usr && \
-    make && \
-    make install && \
-    cd .. && \
-    rm -rf ta-lib ta-lib-0.4.0-src.tar.gz
-
-# Set the working directory in the container
+# Set working directory
 WORKDIR /app
 
-# Copy the requirements file into the container
+# Copy requirements first to leverage cache
 COPY requirements.txt .
 
 # Install Python dependencies
-# We install numpy first because TA-Lib python wrapper needs it
-RUN pip install --no-cache-dir numpy && \
-    pip install --no-cache-dir -r requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy the rest of the application code
+# Copy the rest of the application
 COPY . .
 
-# Expose port 5000 (standard Flask port)
-EXPOSE 5000
-
-# Define environment variables (These should be overridden in deployment dashboard)
-ENV FLASK_APP=src/web/app.py
-ENV FLASK_ENV=production
-
-# Command to run the application (Using gunicorn for production is better than python app.py)
-# We need to run BOTH the web app and the bot? 
-# Usually best to split them, but for a simple project, we can run a script that starts both.
-# For now, let's Stick to the web app as the primary entrypoint, or create a supervisord config.
-# Let's create a simple start script.
-
-# Copy and set permissions for start script
-COPY start.sh .
+# Ensure start script is executable
 RUN chmod +x start.sh
 
+# Environment variables (Defaults, can be overridden by Render)
+ENV PYTHONUNBUFFERED=1
+
+# Run the start script
 CMD ["./start.sh"]

@@ -1,10 +1,7 @@
 #!/bin/bash
-
 # Start the Telegram Bot in the background
-echo "Starting Telegram Bot..."
-python src/bot/telegram_bot.py &
+python -m src.bot.telegram_bot &
 
-# Start the Web Application in the foreground
-echo "Starting Web Application..."
-# Using exec to replace the shell process with the python process
-exec python src/web/app.py
+# Start the Flask Web App (Foreground)
+# Gunicorn will bind to $PORT provided by Render
+gunicorn src.web.app:app
