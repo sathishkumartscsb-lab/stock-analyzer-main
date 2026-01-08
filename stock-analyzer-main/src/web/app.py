@@ -107,4 +107,6 @@ def share_telegram():
         return {"status": "error", "message": str(e)}
 
 if __name__ == '__main__':
-    app.run(debug=True, port=5000)
+    port = int(os.environ.get('PORT', 5000))
+    # Host must be 0.0.0.0 to be accessible outside container
+    app.run(host='0.0.0.0', port=port, debug=False)

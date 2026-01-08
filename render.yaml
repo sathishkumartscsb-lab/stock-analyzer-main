@@ -1,0 +1,9 @@
+services:
+  - type: web
+    name: stock-analyzer
+    env: docker
+    rootDir: stock-analyzer-main
+    plan: free
+    envVars:
+      - key: PORT
+        value: 5000
